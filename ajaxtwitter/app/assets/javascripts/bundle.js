@@ -52,14 +52,20 @@ class FollowToggle {
     render() {
         if(this.followState === 'unfollow') {
             this.$el.text('Follow!');
+            this.$el.prop('disabled', true);
         }
         else if (this.followState === 'follow') {
             this.$el.text('Unfollow!');
+            this.$el.prop('disabled', true);
+
         }
+        this.$el.prop('disabled', false);
+
+        // this.$el.disabled = this.followState.prop('unfollow');
     }
 
     handleClick() {
-        console.log('hitting handleclick');
+        // console.log('hitting handleclick');
         const handler = function (e) {
             e.preventDefault();
             if(this.followState === 'unfollow') {
