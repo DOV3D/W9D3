@@ -5,24 +5,37 @@
 /*!***********************************!*\
   !*** ./frontend/follow_toggle.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module) => {
 
-const { Module } = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'webpack'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+
 
 class FollowToggle {
     constructor(el) {
         this.$el = $(el);
         this.userId = this.$el.data('user-id');
         this.followState = this.$el.data('initial-follow-state');
+        // console.log('this is being called');
+        this.render();
+    }
 
+    render() {
+        if(this.followState === 'unfollow') {
+            this.$el.text('Follow!');
+        }
+        else if (this.followState === 'follow') {
+            this.$el.text('Unfollow!');
+        }
+    }
 
+    handleClick() {
+        
     }
 
 }
     
 
 
-Module.exports =  FollowToggle;
+module.exports =  FollowToggle;
 
 /***/ })
 
@@ -60,6 +73,12 @@ var __webpack_exports__ = {};
   !*** ./frontend/twitter.js ***!
   \*****************************/
 const FollowToggle = __webpack_require__(/*! ./follow_toggle */ "./frontend/follow_toggle.js");
+
+$(()=> {
+    $('button.follow-toggle').each(function(idx, el) {
+        return new FollowToggle(el);
+    })
+})
 
 })();
 
