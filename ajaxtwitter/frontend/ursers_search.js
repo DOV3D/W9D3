@@ -10,10 +10,11 @@ class UsersSearch {
 
     handleInput() {
         this.$input.on('keypress', function () {
-            this.$input.val() = this.$input.text()
-            APIUtil.searchUsers(this.$input.val()).then((res) => {
-                console.log(res)
-            })
+            APIUtil.searchUsers(this.$input.value);
+            this.$ul.text()
+            // APIUtil.searchUsers(this.$input.text()).then((res) => {
+            //     console.log(res)
+            // })
         })
     }
 }
