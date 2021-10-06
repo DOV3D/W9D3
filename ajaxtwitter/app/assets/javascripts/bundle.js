@@ -1,13 +1,43 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./frontend/api_util.js":
+/*!******************************!*\
+  !*** ./frontend/api_util.js ***!
+  \******************************/
+/***/ ((module) => {
+
+
+const APIUtil = {
+    followUser: id => {
+        return $.ajax({
+            method: "POST",
+            url: `/users/${id}/follow`,
+            dataType: 'JSON'
+        })
+    },
+
+    unfollowUser: id => {
+        return $.ajax({
+            method: "DELETE",
+            url: `/users/${id}/follow`,
+            dataType: 'JSON'
+        })
+
+    } 
+};
+
+module.exports = APIUtil;
+
+/***/ }),
+
 /***/ "./frontend/follow_toggle.js":
 /*!***********************************!*\
   !*** ./frontend/follow_toggle.js ***!
   \***********************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-
+const APIUtil = __webpack_require__ (/*! ./api_util */ "./frontend/api_util.js")
 
 class FollowToggle {
     constructor(el) {
@@ -16,6 +46,7 @@ class FollowToggle {
         this.followState = this.$el.data('initial-follow-state');
         // console.log('this is being called');
         this.render();
+        this.handleClick();
     }
 
     render() {
@@ -28,13 +59,23 @@ class FollowToggle {
     }
 
     handleClick() {
-        
+        console.log('hitting handleclick');
+        const handler = function (e) {
+            e.preventDefault();
+            if(this.followState === 'unfollow') {
+                APIUtil.followUser(this.userId);
+                this.followState='follow';
+            } else {
+                APIUtil.unfollowUser(this.userId);
+                this.followState='unfollow';
+            }
+            this.render();
+        };
+        this.$el.on('click', handler.bind(this));
     }
 
 }
     
-
-
 module.exports =  FollowToggle;
 
 /***/ })
@@ -73,7 +114,7 @@ var __webpack_exports__ = {};
   !*** ./frontend/twitter.js ***!
   \*****************************/
 const FollowToggle = __webpack_require__(/*! ./follow_toggle */ "./frontend/follow_toggle.js");
-
+const APIUtil = __webpack_require__(/*! ./api_util */ "./frontend/api_util.js");
 $(()=> {
     $('button.follow-toggle').each(function(idx, el) {
         return new FollowToggle(el);
